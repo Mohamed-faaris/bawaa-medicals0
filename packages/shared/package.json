@@ -1,0 +1,17 @@
+{
+  "name": "@bavaa/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "echo shared build",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@bavaa/drizzle-db",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "echo drizzle build",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.29.0",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.20.0",
+    "@types/pg": "^8.10.9",
+    "typescript": "^5.2.2"
+  }
+}
