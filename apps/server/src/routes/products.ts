@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { productSchema, createProductSchema } from '@bavaa/shared';
+import { productSchema, createProductSchema } from '@bawaa/shared';
 
 const router = Router();
 
@@ -7,19 +7,19 @@ const router = Router();
 router.get('/', (req, res) => {
   res.json({
     products: [
-      { 
-        id: 1, 
-        name: 'Paracetamol 500mg', 
+      {
+        id: 1,
+        name: 'Paracetamol 500mg',
         description: 'Pain relief tablets',
-        price: 5.99, 
+        price: 5.99,
         stock: 100,
         category: 'Medicine'
       },
-      { 
-        id: 2, 
-        name: 'Vitamin C 1000mg', 
+      {
+        id: 2,
+        name: 'Vitamin C 1000mg',
         description: 'Immune support',
-        price: 12.99, 
+        price: 12.99,
         stock: 50,
         category: 'Supplements'
       },
@@ -44,11 +44,11 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const { id } = req.params;
   res.json({
-    product: { 
-      id: Number(id), 
-      name: 'Paracetamol 500mg', 
+    product: {
+      id: Number(id),
+      name: 'Paracetamol 500mg',
       description: 'Pain relief tablets',
-      price: 5.99, 
+      price: 5.99,
       stock: 100,
       category: 'Medicine'
     }

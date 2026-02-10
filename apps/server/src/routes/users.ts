@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUserSchema } from '@bavaa/shared';
+import { createUserSchema } from '@bawaa/shared';
 
 const router = Router();
 

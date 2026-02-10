@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import { db } from '@bavaa/drizzle-db'
+import { db } from '@bawaa/drizzle-db'
 import userRoutes from './routes/users'
 import productRoutes from './routes/products'
 import { logger, errorHandler, notFound } from './middleware'
@@ -18,7 +18,7 @@ app.use(logger)
 
 // Routes
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'Bavaa Medicals API Running',
     version: '1.0.0',
     db: db
@@ -26,8 +26,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+  res.json({
+    status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   })

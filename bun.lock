@@ -14,7 +14,7 @@
       },
     },
     "apps/admin-mobile": {
-      "name": "@bavaa/admin-mobile",
+      "name": "@bawaa/admin-mobile",
       "version": "0.0.0",
       "dependencies": {
         "@tanstack/react-query": "^5.0.0",
@@ -35,7 +35,7 @@
       },
     },
     "apps/admin-panel": {
-      "name": "@bavaa/admin-panel",
+      "name": "@bawaa/admin-panel",
       "version": "0.0.0",
       "dependencies": {
         "@tanstack/react-query": "^5.0.0",
@@ -56,7 +56,7 @@
       },
     },
     "apps/delivery-mobile": {
-      "name": "@bavaa/delivery-mobile",
+      "name": "@bawaa/delivery-mobile",
       "version": "0.0.0",
       "dependencies": {
         "@tanstack/react-query": "^5.0.0",
@@ -77,7 +77,7 @@
       },
     },
     "apps/mobile": {
-      "name": "@bavaa/mobile",
+      "name": "@bawaa/mobile",
       "version": "0.0.0",
       "dependencies": {
         "@tanstack/react-query": "^5.0.0",
@@ -98,10 +98,10 @@
       },
     },
     "apps/server": {
-      "name": "@bavaa/server",
+      "name": "@bawaa/server",
       "version": "1.0.0",
       "dependencies": {
-        "@bavaa/drizzle-db": "workspace:*",
+        "@bawaa/drizzle-db": "workspace:*",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
         "express": "^4.18.2",
@@ -114,7 +114,7 @@
       },
     },
     "packages/config": {
-      "name": "@bavaa/config",
+      "name": "@bawaa/config",
       "version": "1.0.0",
       "dependencies": {
         "zod": "^3.22.4",
@@ -125,10 +125,10 @@
       },
     },
     "packages/drizzle-db": {
-      "name": "@bavaa/drizzle-db",
+      "name": "@bawaa/drizzle-db",
       "version": "1.0.0",
       "dependencies": {
-        "@bavaa/config": "*",
+        "@bawaa/config": "*",
         "drizzle-orm": "^0.29.0",
         "pg": "^8.11.3",
       },
@@ -139,7 +139,7 @@
       },
     },
     "packages/shared": {
-      "name": "@bavaa/shared",
+      "name": "@bawaa/shared",
       "version": "1.0.0",
       "dependencies": {
         "zod": "^3.22.4",
@@ -149,7 +149,7 @@
       },
     },
     "packages/ui": {
-      "name": "@bavaa/ui",
+      "name": "@bawaa/ui",
       "version": "1.0.0",
       "dependencies": {
         "react": "^18.2.0",
@@ -205,23 +205,23 @@
 
     "@babel/types": ["@babel/types@7.29.0", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.28.5" } }, "sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A=="],
 
-    "@bavaa/admin-mobile": ["@bavaa/admin-mobile@workspace:apps/admin-mobile"],
+    "@bawaa/admin-mobile": ["@bawaa/admin-mobile@workspace:apps/admin-mobile"],
 
-    "@bavaa/admin-panel": ["@bavaa/admin-panel@workspace:apps/admin-panel"],
+    "@bawaa/admin-panel": ["@bawaa/admin-panel@workspace:apps/admin-panel"],
 
-    "@bavaa/config": ["@bavaa/config@workspace:packages/config"],
+    "@bawaa/config": ["@bawaa/config@workspace:packages/config"],
 
-    "@bavaa/delivery-mobile": ["@bavaa/delivery-mobile@workspace:apps/delivery-mobile"],
+    "@bawaa/delivery-mobile": ["@bawaa/delivery-mobile@workspace:apps/delivery-mobile"],
 
-    "@bavaa/drizzle-db": ["@bavaa/drizzle-db@workspace:packages/drizzle-db"],
+    "@bawaa/drizzle-db": ["@bawaa/drizzle-db@workspace:packages/drizzle-db"],
 
-    "@bavaa/mobile": ["@bavaa/mobile@workspace:apps/mobile"],
+    "@bawaa/mobile": ["@bawaa/mobile@workspace:apps/mobile"],
 
-    "@bavaa/server": ["@bavaa/server@workspace:apps/server"],
+    "@bawaa/server": ["@bawaa/server@workspace:apps/server"],
 
-    "@bavaa/shared": ["@bavaa/shared@workspace:packages/shared"],
+    "@bawaa/shared": ["@bawaa/shared@workspace:packages/shared"],
 
-    "@bavaa/ui": ["@bavaa/ui@workspace:packages/ui"],
+    "@bawaa/ui": ["@bawaa/ui@workspace:packages/ui"],
 
     "@esbuild-kit/core-utils": ["@esbuild-kit/core-utils@3.3.2", "", { "dependencies": { "esbuild": "~0.18.20", "source-map-support": "^0.5.21" } }, "sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ=="],
 
