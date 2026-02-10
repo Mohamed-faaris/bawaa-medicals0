@@ -1,5 +1,5 @@
 import type { Config } from "drizzle-kit";
-import { config } from "@bavaa/config";
+import { config } from "@bawaa/config";
 
 export default {
     schema: "./src/schema.ts",

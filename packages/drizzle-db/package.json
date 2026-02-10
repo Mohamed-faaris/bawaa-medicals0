@@ -11,7 +11,7 @@
   "dependencies": {
     "drizzle-orm": "^0.29.0",
     "pg": "^8.11.3",
-    "@bavaa/config": "*",
+    "@bawaa/config": "*",
   },
   "devDependencies": {
     "drizzle-kit": "^0.20.0",
