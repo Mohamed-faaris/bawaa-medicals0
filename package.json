@@ -10,6 +10,11 @@
     "clean": "turbo clean"
   },
   "devDependencies": {
-    "turbo": "^2.0.0"
-  }
+    "turbo": "^2.0.0",
+    "eslint": "^8.55.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-config-prettier": "^9.1.0",
+  },
 }

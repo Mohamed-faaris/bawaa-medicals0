@@ -1,1 +1,1 @@
-export const db = "drizzle-db-ready"
+export * from "./schema";
