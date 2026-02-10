@@ -20,5 +20,16 @@
     "@typescript-eslint/parser": "^6.15.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-config-prettier": "^9.1.0"
+  },
+  "cspell": {
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+      "bawaa"
+    ],
+    "ignoreWords": [],
+    "import": []
   }
 }
