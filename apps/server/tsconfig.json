@@ -8,7 +8,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": "./src",
     "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,
@@ -19,6 +18,6 @@
       "@bawaa/*": ["../../packages/*/src"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../../packages/*/src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
