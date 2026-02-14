@@ -1,8 +1,9 @@
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { createRootRoute } from '@tanstack/react-router'
+import { Outlet } from '@tanstack/react-router'
 
-export const Route = createRootRoute({
+export const rootRoute = createRootRoute({
   component: () => (
-    <div className="min-h-screen bg-gray-100 text-gray-900">
+    <div className="min-h-screen bg-background text-foreground">
       <Outlet />
     </div>
   ),
