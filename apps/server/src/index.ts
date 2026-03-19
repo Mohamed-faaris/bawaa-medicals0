@@ -12,15 +12,17 @@ app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.get('/api/orders', (_req: Request, res: Response) => {
-  res.json({
-    orders: [
-      { id: 'ORD-001', status: 'processing', customer: 'Rajesh Kumar', total: '₹485' },
-      { id: 'ORD-002', status: 'delivered', customer: 'Priya Kumar', total: '₹340' },
-    ],
-  });
+app.get('/api', (_req: Request, res: Response) => {
+  res.json({ message: 'Welcome to the API' });
 });
 
+app.all('', (req: Request, res: Response) => {
+  res.status(404).send(
+    `bawaa-medicals API is running. check <a href="${req.protocol}://${req.get('host')}/api/health">health</a> for status.`
+  );
+});
+
+
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`express Server running on http://localhost:${PORT}`);
 });
