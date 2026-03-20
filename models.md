@@ -10,7 +10,7 @@ This document describes all data models in the Bavaa Medicals application. The b
 
 ### Users
 
-Represents all users in the system (customers, staff, admins).
+Represents all users in the system (customers, staff, admins, delivery personnel).
 
 | Field | Type | Constraints | Description |
 |-------|------|-------------|-------------|
@@ -27,6 +27,7 @@ Represents all users in the system (customers, staff, admins).
 **Relations:**
 - Has one `Account` (one-to-one)
 - Has many `Order` (one-to-many)
+- Has many `Delivery` (one-to-many, as delivery person)
 
 ---
 
@@ -39,7 +40,7 @@ Authentication and role information for users.
 | `id` | `serial` | Primary Key | Auto-incrementing ID |
 | `userId` | `integer` | NOT NULL, FK → `users.id` | Reference to user |
 | `password` | `varchar(255)` | NOT NULL | Hashed password |
-| `role` | `enum` | DEFAULT 'customer' | One of: admin, staff, customer |
+| `role` | `enum` | DEFAULT 'customer' | One of: admin, staff, customer, delivery |
 | `isActive` | `integer` | DEFAULT 1 | Account active status (0/1) |
 | `lastLogin` | `timestamp` | Optional | Last login timestamp |
 | `createdAt` | `timestamp` | DEFAULT NOW() | Creation timestamp |
@@ -48,10 +49,33 @@ Authentication and role information for users.
 **Indexes:** `user_id_idx` on `userId`
 
 **Enums:**
-- `user_role`: `['admin', 'staff', 'customer']`
+- `user_role`: `['admin', 'staff', 'customer', 'delivery']`
 
 **Relations:**
 - Belongs to one `User` (one-to-one)
+
+---
+
+### Products
+
+Medical products available for order.
+
+| Field | Type | Constraints | Description |
+|-------|------|-------------|-------------|
+| `id` | `serial` | Primary Key | Auto-incrementing ID |
+| `name` | `varchar(255)` | NOT NULL | Product name |
+| `description` | `text` | Optional | Product description |
+| `price` | `integer` | NOT NULL | Price in cents |
+| `stock` | `integer` | DEFAULT 0 | Available stock quantity |
+| `category` | `varchar(100)` | Optional | Product category |
+| `imageUrl` | `varchar(500)` | Optional | Product image URL |
+| `createdAt` | `timestamp` | DEFAULT NOW() | Creation timestamp |
+| `updatedAt` | `timestamp` | DEFAULT NOW() | Last update timestamp |
+
+**Indexes:** `category_idx` on `category`
+
+**Relations:**
+- Has many `OrderItem` (one-to-many)
 
 ---
 
@@ -62,23 +86,54 @@ Customer orders in the system.
 | Field | Type | Constraints | Description |
 |-------|------|-------------|-------------|
 | `id` | `serial` | Primary Key | Auto-incrementing ID |
+| `orderNumber` | `varchar(20)` | NOT NULL, UNIQUE | Human-readable order number |
 | `userId` | `integer` | NOT NULL, FK → `users.id` | Reference to customer |
+| `type` | `enum` | DEFAULT 'items' | Order type: prescription or items |
 | `status` | `enum` | DEFAULT 'pending' | Order status |
-| `totalAmount` | `integer` | Optional | Total amount in cents |
+| `totalAmount` | `integer` | NOT NULL | Total amount in cents |
+| `deliveryFee` | `integer` | DEFAULT 0 | Delivery fee in cents |
+| `deliveryAddress` | `text` | Optional | Delivery address |
 | `notes` | `text` | Optional | Order notes |
+| `prescriptionUrl` | `varchar(500)` | Optional | URL to prescription image |
 | `createdAt` | `timestamp` | DEFAULT NOW() | Creation timestamp |
 | `updatedAt` | `timestamp` | DEFAULT NOW() | Last update timestamp |
 
 **Indexes:** 
 - `user_id_idx` on `userId`
 - `status_idx` on `status`
+- `order_number_idx` on `orderNumber`
 
 **Enums:**
-- `order_status`: `['pending', 'processing', 'shipped', 'delivered', 'cancelled']`
+- `order_type`: `['prescription', 'items']`
+- `order_status`: `['pending', 'processing', 'ready', 'delivered', 'cancelled']`
 
 **Relations:**
 - Belongs to one `User` (one-to-one)
+- Has many `OrderItem` (one-to-many)
 - Has many `Upload` (one-to-many)
+- Has one `Delivery` (one-to-one)
+
+---
+
+### OrderItems
+
+Individual items within an order.
+
+| Field | Type | Constraints | Description |
+|-------|------|-------------|-------------|
+| `id` | `serial` | Primary Key | Auto-incrementing ID |
+| `orderId` | `integer` | NOT NULL, FK → `orders.id` | Reference to order |
+| `productId` | `integer` | NOT NULL, FK → `products.id` | Reference to product |
+| `quantity` | `integer` | NOT NULL | Quantity ordered |
+| `price` | `integer` | NOT NULL | Price at time of order (cents) |
+
+**Indexes:** 
+- `order_id_idx` on `orderId`
+- `product_id_idx` on `productId`
+
+**Relations:**
+- Belongs to one `Order` (one-to-one)
+- Belongs to one `Product` (one-to-one)
 
 ---
 
@@ -89,7 +144,7 @@ File uploads associated with orders (prescriptions, documentation).
 | Field | Type | Constraints | Description |
 |-------|------|-------------|-------------|
 | `id` | `serial` | Primary Key | Auto-incrementing ID |
-| `orderId` | `integer` | NOT NULL, FK → `orders.id` | Reference to order |
+| `orderId` | `integer` | FK → `orders.id` | Reference to order |
 | `url` | `varchar(500)` | NOT NULL | File URL/path |
 | `description` | `text` | Optional | File description |
 | `isPrescription` | `integer` | DEFAULT 0 | Whether this is a prescription (0/1) |
@@ -103,72 +158,32 @@ File uploads associated with orders (prescriptions, documentation).
 
 ---
 
-## API Validation Schemas
+### Deliveries
 
-These Zod schemas are used for API request/response validation in the shared package.
+Delivery tracking for orders.
 
-### User Schema
+| Field | Type | Constraints | Description |
+|-------|------|-------------|-------------|
+| `id` | `serial` | Primary Key | Auto-incrementing ID |
+| `orderId` | `integer` | NOT NULL, FK → `orders.id` | Reference to order |
+| `deliveryPersonId` | `integer` | NOT NULL, FK → `users.id` | Reference to delivery person |
+| `status` | `enum` | DEFAULT 'picked' | Delivery status |
+| `pickedAt` | `timestamp` | Optional | When order was picked up |
+| `deliveredAt` | `timestamp` | Optional | When order was delivered |
+| `deliveryNotes` | `text` | Optional | Notes from delivery |
+| `createdAt` | `timestamp` | DEFAULT NOW() | Creation timestamp |
+| `updatedAt` | `timestamp` | DEFAULT NOW() | Last update timestamp |
 
-```typescript
-{
-  id: number
-  name: string (min 2 chars)
-  email: string (valid email)
-  role: 'admin' | 'customer' | 'delivery'
-  createdAt: Date (optional)
-}
-```
+**Indexes:** 
+- `order_id_idx` on `orderId`
+- `delivery_person_id_idx` on `deliveryPersonId`
 
-**Derived Schemas:**
-- `createUserSchema` - for creating users (excludes id, createdAt)
-- `updateUserSchema` - for updating users (all fields optional)
+**Enums:**
+- `delivery_status`: `['picked', 'on_the_way', 'delivered', 'failed']`
 
----
-
-### Product Schema
-
-```typescript
-{
-  id: number
-  name: string (min 1 char)
-  description: string
-  price: number (positive)
-  stock: number (integer, min 0)
-  category: string
-  imageUrl: string (optional, valid URL)
-  createdAt: Date (optional)
-  updatedAt: Date (optional)
-}
-```
-
-**Derived Schemas:**
-- `createProductSchema` - for creating products (excludes id, createdAt, updatedAt)
-- `updateProductSchema` - for updating products (all fields optional)
-
----
-
-### Order Schema
-
-```typescript
-{
-  id: number
-  userId: number
-  items: Array<{
-    productId: number
-    quantity: number (positive integer)
-    price: number (positive)
-  }>
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
-  totalAmount: number (positive)
-  deliveryAddress: string
-  createdAt: Date (optional)
-  updatedAt: Date (optional)
-}
-```
-
-**Derived Schemas:**
-- `createOrderSchema` - for creating orders (excludes id, createdAt, updatedAt)
-- `updateOrderStatusSchema` - for updating order status
+**Relations:**
+- Belongs to one `Order` (one-to-one)
+- Belongs to one `User` (one-to-one, as delivery person)
 
 ---
 
@@ -178,7 +193,12 @@ These Zod schemas are used for API request/response validation in the shared pac
 erDiagram
     USERS ||--o| ACCOUNTS : "has"
     USERS ||--o{ ORDERS : "places"
+    USERS ||--o{ DELIVERIES : "performs"
+    ORDERS ||--o{ ORDER_ITEMS : "contains"
+    ORDERS ||--o| DELIVERIES : "has"
     ORDERS ||--o{ UPLOADS : "has"
+    PRODUCTS ||--o{ ORDER_ITEMS : "included_in"
+    DELIVERIES }o--|| USERS : "assigned_to"
 
     USERS {
         serial id PK
@@ -201,14 +221,39 @@ erDiagram
         timestamp updatedAt
     }
 
-    ORDERS {
+    PRODUCTS {
         serial id PK
-        integer userId FK
-        varchar status
-        integer totalAmount
-        text notes
+        varchar name
+        text description
+        integer price
+        integer stock
+        varchar category
+        varchar imageUrl
         timestamp createdAt
         timestamp updatedAt
+    }
+
+    ORDERS {
+        serial id PK
+        varchar orderNumber UK
+        integer userId FK
+        varchar type
+        varchar status
+        integer totalAmount
+        integer deliveryFee
+        text deliveryAddress
+        text notes
+        varchar prescriptionUrl
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    ORDER_ITEMS {
+        serial id PK
+        integer orderId FK
+        integer productId FK
+        integer quantity
+        integer price
     }
 
     UPLOADS {
@@ -220,37 +265,18 @@ erDiagram
         jsonb metadata
         timestamp uploadedAt
     }
-```
 
-### ASCII Diagram
-
-```
-┌─────────────┐       ┌─────────────┐
-│    users    │       │  accounts  │
-├─────────────┤       ├─────────────┤
-│ id (PK)     │◄──────│ userId (FK) │
-│ name        │       │ id (PK)     │
-│ email       │       │ password    │
-│ phone       │       │ role        │
-│ address     │       │ isActive    │
-│ createdAt   │       │ lastLogin   │
-│ updatedAt   │       │ createdAt   │
-└─────────────┘       │ updatedAt   │
-        │             └─────────────┘
-        │
-        │ 1:N
-        ▼
-┌─────────────┐       ┌─────────────┐
-│   orders    │       │  uploads   │
-├─────────────┤       ├─────────────┤
-│ id (PK)     │       │ id (PK)     │
-│ userId (FK) │◄──────│ orderId(FK) │
-│ status      │       │ url         │
-│ totalAmount │       │ description │
-│ notes       │       │ isPrescript.│
-│ createdAt   │       │ metadata    │
-│ updatedAt   │       │ uploadedAt  │
-└─────────────┘       └─────────────┘
+    DELIVERIES {
+        serial id PK
+        integer orderId FK
+        integer deliveryPersonId FK
+        varchar status
+        timestamp pickedAt
+        timestamp deliveredAt
+        text deliveryNotes
+        timestamp createdAt
+        timestamp updatedAt
+    }
 ```
 
 ---
