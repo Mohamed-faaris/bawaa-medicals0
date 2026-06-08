@@ -1,4 +1,5 @@
 import express, { type Request, type Response } from 'express';
+import { getEnv } from '@bawaa/config/env';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +19,12 @@ app.get('/api', (_req: Request, res: Response) => {
 
 app.all('', (req: Request, res: Response) => {
   res.status(404).send(
-    `bawaa-medicals API is running. check <a href="${req.protocol}://${req.get('host')}/api/health">health</a> for status.`
+    `bawaa-medicals API is running. check <a href="${req.protocol}://${req.get('host')}/api/health">health</a> for status.
+    <br/><a href="https://localhost:4001"> customer portal</a>
+    <br/><a href="https://localhost:4002"> admin portal</a>
+    <br/><a href="https://localhost:4003"> delivery portal</a>
+    <br/><a href="https://localhost:4004"> admin panel</a>
+    `
   );
 });
 
